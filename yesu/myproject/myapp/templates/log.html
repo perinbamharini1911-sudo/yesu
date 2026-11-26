@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Intelligent Library System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+        body{min-height:100vh;display:flex;background:#f4f6fb;color:#1f2937;}
+        .left{flex:1;background:linear-gradient(160deg,#2d4a9e,#16285c);color:#fff;display:flex;flex-direction:column;
+              justify-content:center;padding:60px;}
+        .left h1{font-family:'Playfair Display',serif;font-size:42px;line-height:1.25;margin-bottom:18px;}
+        .left h1 span{color:#f7c26b;}
+        .left p{color:#cdd8f5;line-height:1.8;max-width:420px;}
+        .left ul{margin-top:28px;list-style:none;}
+        .left li{margin-bottom:10px;color:#e3e9fa;}
+        .left li::before{content:'✦ ';color:#f7c26b;}
+        .right{flex:1;display:flex;justify-content:center;align-items:center;padding:30px;}
+        .box{width:100%;max-width:380px;}
+        .box h2{font-family:'Playfair Display',serif;font-size:30px;color:#2d4a9e;margin-bottom:6px;}
+        .box .hint{color:#6b7280;font-size:14px;margin-bottom:24px;}
+        label{display:block;font-size:13px;font-weight:500;margin:16px 0 6px;}
+        input{width:100%;padding:13px 14px;border:1px solid #dfe4f0;border-radius:8px;background:#fff;font-size:15px;outline:none;}
+        input:focus{border-color:#2d4a9e;box-shadow:0 0 0 3px rgba(45,74,158,.12);}
+        .login-btn{width:100%;margin-top:24px;padding:14px;border:none;border-radius:8px;background:#2d4a9e;color:#fff;
+                   font-size:16px;font-weight:600;cursor:pointer;transition:.2s;}
+        .login-btn:hover{background:#223a7e;}
+        .error{color:#b3372f;background:#fbe9e7;border-radius:8px;padding:10px 14px;margin-top:16px;font-size:14px;text-align:center;}
+        .register-btn{display:block;text-align:center;margin-top:16px;padding:13px;border:1.5px solid #f0a030;border-radius:8px;
+                      color:#8a5a00;text-decoration:none;font-weight:600;transition:.2s;}
+        .register-btn:hover{background:#f0a030;color:#1f2937;}
+        @media(max-width:800px){.left{display:none;}}
+    </style>
+</head>
+<body>
+    <div class="left">
+        <h1>Intelligent <span>Library</span> System</h1>
+        <p>Manage books, track loans and plan ahead with monthly demand forecasting.</p>
+        <ul>
+            <li>Search and borrow books</li>
+            <li>Track due dates and returns</li>
+            <li>Forecast demand per category</li>
+        </ul>
+    </div>
+    <div class="right">
+        <form method="POST" class="box">
+            {% csrf_token %}
+            <h2>Welcome back</h2>
+            <p class="hint">{{ tes }}</p>
+
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Enter your username" required>
+
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter your password" required>
+
+            <button type="submit" class="login-btn">Log In</button>
+
+            {% if error_message %}<p class="error">{{ error_message }}</p>{% endif %}
+
+            <a href="{% url 'register' %}" class="register-btn">Create an account</a>
+        </form>
+    </div>
+</body>
+</html>

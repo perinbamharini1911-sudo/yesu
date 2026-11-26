@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Intelligent Library System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+        body{min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;
+             background:linear-gradient(160deg,#2d4a9e,#16285c);}
+        form{width:100%;max-width:400px;background:#f4f6fb;border-radius:14px;padding:40px;
+             box-shadow:0 20px 50px rgba(0,0,0,.3);border-top:5px solid #f0a030;}
+        h2{font-family:'Playfair Display',serif;font-size:28px;color:#2d4a9e;text-align:center;margin-bottom:6px;}
+        .hint{text-align:center;color:#6b7280;font-size:14px;margin-bottom:10px;}
+        label{display:block;font-size:13px;font-weight:500;color:#1f2937;margin:16px 0 6px;}
+        input{width:100%;padding:13px 14px;border:1px solid #dfe4f0;border-radius:8px;background:#fff;font-size:15px;outline:none;}
+        input:focus{border-color:#2d4a9e;box-shadow:0 0 0 3px rgba(45,74,158,.12);}
+        button{width:100%;margin-top:24px;padding:14px;border:none;border-radius:8px;background:#2d4a9e;color:#fff;
+               font-size:16px;font-weight:600;cursor:pointer;transition:.2s;}
+        button:hover{background:#223a7e;}
+        .error{color:#b3372f;background:#fbe9e7;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:14px;text-align:center;}
+        .back{display:block;text-align:center;margin-top:16px;color:#8a5a00;font-size:14px;text-decoration:none;}
+        .back:hover{text-decoration:underline;}
+    </style>
+</head>
+<body>
+<form method="POST">
+    {% csrf_token %}
+    <h2>Join the Library 📚</h2>
+    <p class="hint">Create your member account</p>
+    {% if error_message %}<p class="error">{{ error_message }}</p>{% endif %}
+
+    <label>Username</label>
+    <input type="text" name="username" placeholder="Choose a username" required>
+
+    <label>Password</label>
+    <input type="password" name="password" placeholder="Choose a password" required>
+
+    <button type="submit">Register</button>
+    <a class="back" href="{% url 'login_f' %}">← Back to login</a>
+</form>
+</body>
+</html>

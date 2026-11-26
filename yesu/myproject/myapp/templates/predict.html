@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Demand Prediction | Intelligent Library System{% endblock %}
+{% block content %}
+<div style="max-width:640px;margin:0 auto;">
+<h1 class="page">📈 Library Demand Prediction</h1>
+<p class="sub">Enter the details below to predict how many times books of a category will be borrowed in a month.</p>
+
+{% if categories %}
+<div class="card">
+<form method="post">{% csrf_token %}
+    <style>
+        .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+        .fgrid .full{grid-column:1 / -1;}
+        .fgrid label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;}
+        .fgrid input,.fgrid select{width:100%;}
+        @media(max-width:600px){.fgrid{grid-template-columns:1fr;}}
+    </style>
+    <div class="fgrid">
+        <div class="full">
+            <label>Book Category</label>
+            <select name="category" required>
+                {% for c in categories %}<option value="{{ c }}" {% if c == form.category %}selected{% endif %}>{{ c }}</option>{% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>Month</label>
+            <select name="month" required>
+                {% for num, name in months %}<option value="{{ num }}" {% if num == form.month %}selected{% endif %}>{{ name }}</option>{% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>Year</label>
+            <input type="number" name="year" min="2021" max="2035" value="{{ form.year }}" required>
+        </div>
+        <div class="full">
+            <label>Copies Currently Available in Library (this category)</label>
+            <input type="number" name="copies" min="0" value="{{ form.copies }}" required>
+        </div>
+    </div>
+    <button class="btn" type="submit" style="width:100%;margin-top:20px;padding:13px;font-size:15px;">Predict Demand 🚀</button>
+</form>
+</div>
+{% endif %}
+
+{% if error %}<div class="msg error" style="margin-top:20px;">{{ error }}</div>{% endif %}
+
+{% if result %}
+<div class="card stat" style="margin-top:20px;text-align:center;">
+    <p style="margin-bottom:6px;">{% if result.is_actual %}Recorded borrows{% else %}Predicted borrows{% endif %} · {{ result.category }} · {{ result.month_name }} {{ result.year }}</p>
+    <h3 style="font-size:52px;">{{ result.demand }}</h3>
+    <p>books borrowed in the month</p>
+
+    <hr style="border:none;border-top:1px solid var(--line);margin:18px 0;">
+
+    <p style="color:var(--ink);font-size:15px;">Copies needed: <strong>{{ result.needed }}</strong> &nbsp;|&nbsp; Copies available: <strong>{{ result.copies }}</strong></p>
+    {% if result.extra > 0 %}
+    <p style="margin-top:10px;font-size:15px;"><strong style="color:var(--bad);">Restock suggestion:</strong> add about <strong>{{ result.extra }}</strong> more copies.</p>
+    {% else %}
+    <p style="margin-top:10px;font-size:15px;"><strong style="color:var(--ok);">Stock is sufficient</strong> for this demand.</p>
+    {% endif %}
+    {% if result.mape is not None and not result.is_actual %}
+    <p style="margin-top:12px;font-size:12px;">Decision Tree model · average error about {{ result.mape }}% (tested on the last 12 months)</p>
+    {% endif %}
+</div>
+{% endif %}
+</div>
+{% endblock %}
